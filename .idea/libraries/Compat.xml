@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Compat">
+    <CLASSES>
+      <root url="jar://$ANDROID_HOME$/android-compatibility/v4/android-support-v4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
