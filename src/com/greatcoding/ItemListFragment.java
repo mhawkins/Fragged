@@ -27,13 +27,10 @@ public class ItemListFragment extends ListFragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("ItemListFragment", "onActivityCreated");
 
         Configuration configuration = getResources().getConfiguration();
 
-       setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{"A", "B", "C", "D", "E", "F"}  ));
-
-
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"}  ));
     }
 
     @Override
@@ -44,6 +41,10 @@ public class ItemListFragment extends ListFragment {
         View view = inflater.inflate(R.layout.item_list_fragment, container, false);
 
         return view;
+    }
+
+    public void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override

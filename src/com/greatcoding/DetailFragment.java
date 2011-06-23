@@ -29,19 +29,14 @@ public class DetailFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("DetailFragment", "onActivityCreated");
 
         // Receive letter selections
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String letter = intent.getStringExtra("letter");
-
-                StringBuilder youSelected = new StringBuilder();
-                youSelected.append("You selected: ");
-                youSelected.append(letter);
-
-                detailsText.setText(youSelected.toString());
+                Log.d("DetailFragment","In broadcast");
+                setLetter(letter);
             }
         };
 
@@ -54,16 +49,20 @@ public class DetailFragment extends Fragment {
     }
 
     public void onDestroy() {
-        this.getActivity().unregisterReceiver(broadcastReceiver);
         super.onDestroy();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle b)
     {
-        Log.d("DetailFragment", "onCreateView");
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
-
         return view;
+    }
+
+    public void setLetter(String letter) {
+        StringBuilder youSelected = new StringBuilder();
+        youSelected.append("You selected: ");
+        youSelected.append(letter);
+        detailsText.setText(youSelected.toString());
     }
 }

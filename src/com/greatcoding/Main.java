@@ -17,10 +17,12 @@ public class Main extends FragmentActivity
 {
     // Fragments
     private static FragmentManager fragmentManager;
-    private static TopFragment topFragment;
 
     // Broadcast receiver
     private static BroadcastReceiver broadcastReceiver;
+
+    // Data
+    private static String letter;
 
     /** Called when the activity is first created. */
     @Override
@@ -29,48 +31,52 @@ public class Main extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        Log.d("MainActivity", "Bundle: " + savedInstanceState);
+
         // Get a fragment manager
         fragmentManager = this.getSupportFragmentManager();
-        //topFragment = (TopFragment)fragmentManager.findFragmentById(R.id.top_fragment);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String letter = intent.getStringExtra("letter");
-
+                letter = intent.getStringExtra("letter");
 
                 Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
                 int orientation = display.getOrientation();
                 if(orientation == Surface.ROTATION_0 || orientation == Surface.ROTATION_180) {
-                    Intent detailActivity = new Intent(this, DetailActivity.class);
-                    startActivity(detailActivity);
-
+                    loadDetail(letter);
                 }
-
             }
         };
-
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("FRLetterSelected");
 
         this.registerReceiver(broadcastReceiver, intentFilter);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        // Set the fragment title
-        //topFragment.setTitle("Title of top fragment set by main activity!");
-
         Display display = ((WindowManager) this.getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         int orientation = display.getOrientation();
+        if(orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_270) {
+            DetailFragment detailFragment = (DetailFragment)fragmentManager.findFragmentById(R.id.details);
+            detailFragment.setLetter(letter);
+        }
+    }
 
-        Log.d("Main", "Orientation is " + orientation);
+    @Override
+    public void onDestroy() {
+        this.unregisterReceiver(broadcastReceiver);
+        super.onDestroy();
+    }
 
-
+    protected void loadDetail(String letter) {
+        Intent detailActivity = new Intent(this, DetailActivity.class);
+        detailActivity.putExtra("letter", letter);
+        startActivity(detailActivity);
     }
 
 
